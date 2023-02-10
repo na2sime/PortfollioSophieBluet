@@ -42,9 +42,9 @@ document.getElementById("connect").addEventListener("click", async function () {
             if (response.status === 200) {
                 console.log("Login successful");
                 // Get the token
-                let token = response.headers.get("Authorization");
-                // Save the token in the localStorage
-                localStorage.setItem("token", token);
+                response.json().then(data => {
+                    localStorage.setItem("token", data.token);
+                });
                 // Go to the index.html page
                 window.location.href = "index.html";
             } else {

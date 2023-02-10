@@ -12,25 +12,29 @@ document.getElementById("contactButton").addEventListener("click", function () {
 });
 
 resteAllButton();
-fetch(works).then(response => response.json()).then(products => {
-    let gallery = document.querySelector(".gallery");
-    for (let oneProduct of products) {
-        let figureGallery = document.createElement("figure");
-        let imgGallery = document.createElement("img");
-        let figCaptionGallery = document.createElement("figcaption");
 
-        imgGallery.crossOrigin = "anonymous";
-        imgGallery.src = oneProduct.imageUrl.toString();
-        figCaptionGallery.textContent = oneProduct.title;
-        figureGallery.classList.add(oneProduct.category.id.toString());
-        figureGallery.classList.add("gallery__item");
+loadWorks();
+function loadWorks() {
+    fetch(works).then(response => response.json()).then(products => {
+        let gallery = document.querySelector(".gallery");
+        for (let oneProduct of products) {
+            let figureGallery = document.createElement("figure");
+            let imgGallery = document.createElement("img");
+            let figCaptionGallery = document.createElement("figcaption");
 
-        figureGallery.appendChild(imgGallery);
-        figureGallery.appendChild(figCaptionGallery);
+            imgGallery.crossOrigin = "anonymous";
+            imgGallery.src = oneProduct.imageUrl.toString();
+            figCaptionGallery.textContent = oneProduct.title;
+            figureGallery.classList.add(oneProduct.category.id.toString());
+            figureGallery.classList.add("gallery__item");
 
-        gallery.appendChild(figureGallery);
-    }
-});
+            figureGallery.appendChild(imgGallery);
+            figureGallery.appendChild(figCaptionGallery);
+
+            gallery.appendChild(figureGallery);
+        }
+    });
+}
 
 document.getElementById("loginButton").addEventListener("click", function () {
     if (localStorage.getItem("token") !== null) {
@@ -91,4 +95,14 @@ function filterGallery(id) {
             }
         }
     }
+}
+
+function updateGallery() {
+    resetGallery();
+    // Get all figures and remove them
+    let figures = document.querySelectorAll("figure");
+    for (let figure of figures) {
+        figure.remove();
+    }
+    loadWorks();
 }

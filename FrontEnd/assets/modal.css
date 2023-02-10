@@ -1,0 +1,192 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#modal-content {
+    color: black;
+    background-color: white;
+    margin: auto;
+    display: flex;
+    width: 530px;
+    height: 700px;
+    max-width: 700px;
+    border-radius: 15px 15px 15px 15px;
+    padding: 20px;
+    flex-direction: column;
+}
+
+#modal-close {
+    font-size: 20px;
+    align-self: flex-end;
+}
+
+#modal-close:hover {
+    cursor: pointer;
+}
+
+#modal-back {
+    font-size: 20px;
+    align-self: flex-start;
+}
+
+#modal-back:hover {
+    cursor: pointer;
+}
+
+#modal-content h2 {
+    margin-top: 25px;
+    margin-bottom: 45px;
+    color: black;
+    font-family: 'Syne', serif;
+    font-size: 145%;
+}
+
+#modal-add-first {
+    font-family: 'Syne', serif;
+    font-weight: 700;
+    line-height: 3.2;
+    text-align: center;
+    color: white;
+    background-color: #1D6154;
+    margin: 2em auto;
+    width: 260px;
+    height: 50px;
+    text-decoration: none;
+    border-radius: 60px;
+}
+
+#modal-remove-first {
+    align-self: center;
+    color: red;
+    text-decoration: none;
+}
+
+#modal-remove-first:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#modal-add-first:hover {
+    cursor: pointer;
+}
+
+/* Gallery Part */
+
+#modal-gallery {
+    align-self: center;
+    margin: auto;
+    width: 400px;
+    display: grid;
+    grid-template-columns: 85px 85px 85px 85px;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+#modal-gallery img {
+    width: 80px;
+    height: 105px;
+}
+
+/* Add Part */
+
+#modal_photoBox {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    margin: 20px 65px 20px;
+    height: 185px;
+    border-radius: 3px;
+    background-color: #E8F1F6;
+}
+
+#modal_photoBox i {
+    font-size: 50px;
+    color: #B9C5CC;
+    margin-top: 20px;
+}
+
+#modal_photoBox #modal_photoButton {
+    margin-top: 20px;
+    background-color: #CBD6DC;
+    border: none;
+    color: #306685;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 25px;
+}
+
+#modal_photoBox button:hover {
+    cursor: pointer;
+}
+
+#modal_photoBox p {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+#modal-content label {
+    margin: 20px 65px 5px;
+}
+
+#modal-content input {
+    height: 50px;
+    font-size: 1.2em;
+    margin: 0 65px 0;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0 10px;
+}
+
+#modal-content select {
+    height: 50px;
+    font-size: 1.2em;
+    margin: 0 65px 0;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0 10px;
+}
+
+#modal-content #modal_br {
+    margin: 65px 65px 25px;
+    border: 1px solid #B3B3B3;
+    width: auto;
+}
+
+#modal-content #modal_addPhotoButton {
+    margin: 25px 135px 25px;
+    background-color: #A7A7A7;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 25px;
+}
+
+#modal-content #modal_addPhotoButton:hover {
+    cursor: pointer;
+    background-color: #1D6154;
+    color: white;
+}
+
+#modal_photoInput {
+    display: none;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
