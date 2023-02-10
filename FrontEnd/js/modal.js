@@ -191,28 +191,40 @@ function loadModalTwo() {
     addButton.addEventListener("click", function () {
         if (picture.length > 0 && titleInput.value !== "") {
             console.log(titleInput.value);
-            postPicture(titleInput.value, selector.value);
+
+            const response = makeMultipartFormDataPostRequest(
+                'http://localhost:5678/api/works',
+                picture[0],
+                localStorage.getItem("token"),
+                getImageAsBlob(URL.createObjectURL(picture[0])),
+                titleInput.value,
+                selector.value
+            );
+            console.log(response.result);
         }
     });
 }
 
+/*
 async function postPicture(title, category) {
     let post = "http://localhost:5678/api/works";
 
-    let body = {
-        image: picture[0],
-        title: title,
-        category: category
-    }
+    console.log(picture[0].name);
+    console.log(URL.createObjectURL(picture[0]))
+
+    const dataForm = new FormData();
+    dataForm.append("image", URL.createObjectURL(picture[0]), picture[0].name);
+    dataForm.append("title", title);
+    dataForm.append("category", category);
 
     const response = await fetch(post, {
         method: "POST",
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token"),
             "accept": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
             "Content-Type": "multipart/form-data"
         },
-        body: JSON.stringify(body)
+        body: dataForm
     });
 
     if (response.status === 200) {
@@ -220,6 +232,50 @@ async function postPicture(title, category) {
     } else {
         console.log("error: " + response.status);
     }
+}
+ */
+
+async function makeMultipartFormDataPostRequest(url, file, token, imageBlob, title, category) {
+    const formData = new FormData();
+    formData.append('image', imageBlob, file.name);
+    formData.append('title', title);
+    formData.append('category', category);
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        },
+        body: formData
+    });
+
+    return await response.json();
+}
+
+async function getImageAsBlob(imageUrl) {
+    const response = await fetch(imageUrl);
+    return await response.blob();
+}
+
+function getBase64Image(img) {
+    // Create an empty canvas element
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Copy the image contents to the canvas
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    // Get the data-URL formatted image
+    // Firefox supports PNG and JPEG. You could check img.src to
+    // guess the original format, but be aware the using "image/jpg"
+    // will re-encode the image.
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
 function closeModal() {
