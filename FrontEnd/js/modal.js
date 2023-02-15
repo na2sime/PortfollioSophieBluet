@@ -192,8 +192,10 @@ function loadModalTwo() {
     addButton.addEventListener("click", async function () {
         if (picture != null && titleInput.value !== "") {
             const response = await uploadImage(picture, titleInput.value, selector.value);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log("Image uploadée");
+                updateGallery();
+                closeModal();
             } else {
                 console.log("Erreur lors de l'upload (status: " + response.status + ")");
             }
@@ -205,9 +207,7 @@ function loadModalTwo() {
 function uploadImage(imageFile, title, category) {
     const url = 'http://localhost:5678/api/works';
     const headers = {
-        'accept': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'Content-Type': 'multipart/form-data'
     };
     const formData = new FormData();
     formData.append('image', imageFile, imageFile.name);
@@ -237,7 +237,7 @@ function closeModal() {
     modalContent.appendChild(close);
     modalContent.appendChild(back);
     modalOpened = false;
-    picture.splice(0, picture.length);
+    picture = "";
 }
 
 function loadGallery() {
@@ -275,9 +275,9 @@ async function deleteWork(id) {
     });
 
     console.log("sended");
+    console.log(response.status);
     if (response.status === 204) {
         console.log("Delete successful");
-        // Go to the index.html page
         closeModal();
         updateGallery();
     } else {

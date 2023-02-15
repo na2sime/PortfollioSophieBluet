@@ -104,7 +104,9 @@ function updateGallery() {
     // Get all figures and remove them
     let figures = document.querySelectorAll("figure");
     for (let figure of figures) {
-        figure.remove();
+        if (figure.classList.contains("gallery__item")) {
+            figure.remove();
+        }
     }
     loadWorks();
 }
