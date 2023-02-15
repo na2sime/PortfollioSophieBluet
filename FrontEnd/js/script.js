@@ -14,6 +14,7 @@ document.getElementById("contactButton").addEventListener("click", function () {
 resteAllButton();
 
 loadWorks();
+
 function loadWorks() {
     fetch(works).then(response => response.json()).then(products => {
         let gallery = document.querySelector(".gallery");
@@ -44,9 +45,10 @@ document.getElementById("loginButton").addEventListener("click", function () {
 });
 
 if (localStorage.getItem("token") !== null) {
+    document.querySelector("#admin-menu").style.display = "flex";
     document.getElementById("loginButton").textContent = "logout";
     for (let i = 0; i < document.getElementsByClassName("editButton").length; i++) {
-        document.getElementsByClassName("editButton")[i].style.display = "block";
+        document.getElementsByClassName("editButton")[i].style.display = "flex";
     }
 }
 

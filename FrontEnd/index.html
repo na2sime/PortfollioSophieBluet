@@ -14,6 +14,15 @@
     <script src="https://kit.fontawesome.com/a4a70bb18b.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<div id="admin-menu">
+    <div class="editButton">
+        <i class="fa-regular fa-pen-to-square"></i>
+        <p>mode édition</p>
+    </div>
+    <button id="publish-button">
+        publier les changements
+    </button>
+</div>
 <header>
     <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
     <nav>
@@ -29,8 +38,16 @@
     <section id="introduction">
         <figure>
             <img src="./assets/images/sophie-bluel.png" alt="">
+            <div class="editButton">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <p>modifié</p>
+            </div>
         </figure>
         <article>
+            <div class="editButton">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <p>modifié</p>
+            </div>
             <h2>Designer d'espace</h2>
             <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
                 finale du chantier.</p>
@@ -44,7 +61,10 @@
     <section id="portfolio">
         <div id="title">
             <h2>Mes Projets</h2>
-            <i class="fa-regular fa-pen-to-square editButton"></i>
+            <div class="editButton">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <p>modifié</p>
+            </div>
         </div>
         <aside id="modal" class="modal" aria-hidden="true" role="dialog">
             <div id="modal-content">

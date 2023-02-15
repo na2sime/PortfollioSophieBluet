@@ -1,6 +1,6 @@
 "use strict";
 let modalOpened = false;
-let picture = [];
+let picture;
 
 //On click on button who has class "editButton", open the modal
 document.querySelectorAll(".editButton").forEach(function (button) {
@@ -32,7 +32,8 @@ function showPicture() {
     let photoBox = document.getElementById("modal_photoBox");
     photoBox.innerHTML = "";
     let img = document.createElement("img");
-    img.src = URL.createObjectURL(picture[0]);
+    img.id = "modal_add_photo";
+    img.src = URL.createObjectURL(picture);
     img.style.alignSelf = "center";
     img.style.width = "180px";
     img.style.height = "185px";
@@ -184,98 +185,40 @@ function loadModalTwo() {
 
     photoInput.addEventListener("change", function () {
         const file = photoInput.files;
-        picture.push(file[0]);
+        picture = file[0];
         showPicture();
     });
 
-    addButton.addEventListener("click", function () {
-        if (picture.length > 0 && titleInput.value !== "") {
-            console.log(titleInput.value);
-
-            const response = makeMultipartFormDataPostRequest(
-                'http://localhost:5678/api/works',
-                picture[0],
-                localStorage.getItem("token"),
-                getImageAsBlob(URL.createObjectURL(picture[0])),
-                titleInput.value,
-                selector.value
-            );
-            console.log(response.result);
+    addButton.addEventListener("click", async function () {
+        if (picture != null && titleInput.value !== "") {
+            const response = await uploadImage(picture, titleInput.value, selector.value);
+            if (response.status === 200) {
+                console.log("Image uploadée");
+            } else {
+                console.log("Erreur lors de l'upload (status: " + response.status + ")");
+            }
         }
     });
 }
 
-/*
-async function postPicture(title, category) {
-    let post = "http://localhost:5678/api/works";
 
-    console.log(picture[0].name);
-    console.log(URL.createObjectURL(picture[0]))
-
-    const dataForm = new FormData();
-    dataForm.append("image", URL.createObjectURL(picture[0]), picture[0].name);
-    dataForm.append("title", title);
-    dataForm.append("category", category);
-
-    const response = await fetch(post, {
-        method: "POST",
-        headers: {
-            "accept": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "multipart/form-data"
-        },
-        body: dataForm
-    });
-
-    if (response.status === 200) {
-        console.log("ok");
-    } else {
-        console.log("error: " + response.status);
-    }
-}
- */
-
-async function makeMultipartFormDataPostRequest(url, file, token, imageBlob, title, category) {
+function uploadImage(imageFile, title, category) {
+    const url = 'http://localhost:5678/api/works';
+    const headers = {
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Content-Type': 'multipart/form-data'
+    };
     const formData = new FormData();
-    formData.append('image', imageBlob, file.name);
+    formData.append('image', imageFile, imageFile.name);
     formData.append('title', title);
     formData.append('category', category);
 
-    const response = await fetch(url, {
+    return fetch(url, {
         method: 'POST',
-        headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-        },
+        headers: headers,
         body: formData
     });
-
-    return await response.json();
-}
-
-async function getImageAsBlob(imageUrl) {
-    const response = await fetch(imageUrl);
-    return await response.blob();
-}
-
-function getBase64Image(img) {
-    // Create an empty canvas element
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // Copy the image contents to the canvas
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-
-    // Get the data-URL formatted image
-    // Firefox supports PNG and JPEG. You could check img.src to
-    // guess the original format, but be aware the using "image/jpg"
-    // will re-encode the image.
-    var dataURL = canvas.toDataURL("image/png");
-
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
 function closeModal() {
