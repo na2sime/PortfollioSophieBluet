@@ -197,8 +197,11 @@ function loadModalTwo() {
                 updateGallery();
                 closeModal();
             } else {
+                window.alert("Erreur lors de l'upload de l'image");
                 console.log("Erreur lors de l'upload (status: " + response.status + ")");
             }
+        } else {
+            window.alert("Veuillez remplir tous les champs!");
         }
     });
 }

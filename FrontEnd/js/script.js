@@ -11,9 +11,35 @@ document.getElementById("contactButton").addEventListener("click", function () {
     window.location.href = "#contact";
 });
 
+for (let filterButton of document.getElementsByClassName("filterButton")) {
+    filterButton.addEventListener("click", function () {
+        if (filterButton.id === "0") {
+            resetGallery();
+        } else {
+            filterGallery(filterButton.id);
+        }
+    });
+}
+
 resteAllButton();
 
 loadWorks();
+
+loadButtons();
+
+function loadButtons() {
+    let categories = "http://localhost:5678/api/categories";
+    fetch(categories).then(response => response.json()).then(products => {
+        for (let oneProduct of products) {
+            let filter = document.querySelector("#filter");
+            let button = document.createElement("a");
+            button.textContent = oneProduct.name;
+            button.id = oneProduct.id;
+            button.classList.add("filterButton");
+            filter.appendChild(button);
+        }
+    });
+}
 
 function loadWorks() {
     fetch(works).then(response => response.json()).then(products => {
