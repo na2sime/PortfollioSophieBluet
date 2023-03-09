@@ -1,31 +1,43 @@
 "use strict";
-let works = "http://localhost:5678/api/works";
-
-document.getElementById("loginButton").addEventListener("click", function () {
-    // Open the login.html page
-    window.location.href = "login.html";
-});
-
-document.getElementById("contactButton").addEventListener("click", function () {
-    // Go to the contact side
-    window.location.href = "#contact";
-});
-
-for (let filterButton of document.getElementsByClassName("filterButton")) {
-    filterButton.addEventListener("click", function () {
-        if (filterButton.id === "0") {
-            resetGallery();
-        } else {
-            filterGallery(filterButton.id);
-        }
-    });
-}
-
-resteAllButton();
-
-loadWorks();
+var works = "http://localhost:5678/api/works";
 
 loadButtons();
+loadWorks();
+resteAllButton();
+
+window.onload = function () {
+    document.getElementById("contactButton").addEventListener("click", function () {
+        // Go to the contact side
+        window.location.href = "#contact";
+    });
+
+    document.getElementById("loginButton").addEventListener("click", function () {
+        if (localStorage.getItem("token") !== null) {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    if (localStorage.getItem("token") !== null) {
+        document.querySelector("#admin-menu").style.display = "flex";
+        document.getElementById("loginButton").textContent = "logout";
+        for (let i = 0; i < document.getElementsByClassName("editButton").length; i++) {
+            document.getElementsByClassName("editButton")[i].style.display = "flex";
+        }
+    }
+
+    for (let filterButton of document.getElementsByClassName("filterButton")) {
+        filterButton.addEventListener("click", function () {
+            if (filterButton.id === "0") {
+                resetGallery();
+            } else {
+                filterGallery(filterButton.id);
+            }
+        });
+    }
+}
 
 function loadButtons() {
     let categories = "http://localhost:5678/api/categories";
@@ -63,31 +75,20 @@ function loadWorks() {
     });
 }
 
-document.getElementById("loginButton").addEventListener("click", function () {
-    if (localStorage.getItem("token") !== null) {
-        localStorage.removeItem("token");
-        window.location.href = "index.html";
-    }
-});
-
-if (localStorage.getItem("token") !== null) {
-    document.querySelector("#admin-menu").style.display = "flex";
-    document.getElementById("loginButton").textContent = "logout";
-    for (let i = 0; i < document.getElementsByClassName("editButton").length; i++) {
-        document.getElementsByClassName("editButton")[i].style.display = "flex";
-    }
-}
-
 function resteAllButton() {
-    document.getElementById("0").style.color = "white";
-    document.getElementById("0").style.backgroundColor = "#1D6154";
+    for (let filterButton of document.getElementsByClassName("filterButton")) {
+        if (filterButton.id === "0") {
+            filterButton.style.color = "white";
+            filterButton.style.backgroundColor = "#1D6154";
+        }
+    }
 }
 
 function resetOtherButtons(id) {
     for (let i = 1; i < 4; i++) {
         if (i !== id) {
-            document.getElementById(i).style.color = "#1D6154";
-            document.getElementById(i).style.backgroundColor = "white";
+            document.getElementById("" + i).style.color = "#1D6154";
+            document.getElementById("" + i).style.backgroundColor = "white";
         }
     }
 }
@@ -105,11 +106,11 @@ function resetGallery() {
 
 function filterGallery(id) {
     // Get all figures
+    resetOtherButtons(id);
     document.getElementById(id).style.color = "white";
     document.getElementById(id).style.backgroundColor = "#1D6154";
     document.getElementById("0").style.color = "#1D6154";
     document.getElementById("0").style.backgroundColor = "white";
-    resetOtherButtons(id);
     let figures = document.querySelectorAll("figure");
     for (let figure of figures) {
         if (figure.classList.contains("gallery__item")) {
